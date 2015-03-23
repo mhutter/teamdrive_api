@@ -31,13 +31,6 @@ api.remove_user 'foobar'
 #=> true
 ```
 
-## Options
-
-Options and default values:
-
-- `:api_version` ('1.0.005')
-- `:register_path` ('pbas/td2api/api/api.htm')
-
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `bin/console` for an interactive prompt that will allow you to experiment.
