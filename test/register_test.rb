@@ -20,9 +20,8 @@ class TestRegister < Minitest::Test
       to_return(:status => 200, :body => response_body, :headers => {})
 
     Time.stub :now, Time.at(0) do
-      res = r.remove_user('foo', false)
+      assert r.remove_user('foo', false)
       assert_requested request
-      assert_equal '0', res['intresult']
     end
   end
 

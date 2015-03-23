@@ -1,5 +1,5 @@
 module TeamdriveApi
-  # An exception raised by TeamdriveApi
+  # An exception raised by the TeamDrive API
   class Error < StandardError
     def initialize(code, msg)
       super msg

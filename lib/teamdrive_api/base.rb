@@ -41,11 +41,11 @@ module TeamdriveApi
           checksum: Digest::MD5.hexdigest(body + @api_checksum_salt)
         }
 
-      res = res['teamdrive']
-      unless res['exception'].nil?
+      res = res['teamdrive'].symbolize_keys
+      unless res[:exception].nil?
         fail TeamdriveApi::Error.new(
-          res['exception']['primarycode'],
-          res['exception']['message']
+          res[:exception][:primarycode],
+          res[:exception][:message]
         )
       end
       res
