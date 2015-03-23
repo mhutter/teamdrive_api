@@ -25,10 +25,10 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-# Set some options (see options and default values below)
-TeamdriveApi.options[:api_version] = '1.0.004'
+api = TeamdriveApi::Register.new('example.com', 'd3b07384d113edec49eaa6238ad5ff00', '1.0.005')
 
-# TODO: write usage instructions
+api.remove_user 'foobar'
+#=> true
 ```
 
 ## Options
@@ -51,3 +51,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
+
+## Trademarks
+
+All trademarks named within this project are, without limitation, subject to the regulations of the trademark laws in each case, and as appropriate to ownership rights of the respective registered owners.
