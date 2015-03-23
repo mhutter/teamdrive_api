@@ -1,4 +1,4 @@
-# TeamdriveApi
+# TeamdriveApi [![Build Status](https://travis-ci.org/mhutter/teamdrive_api.svg?branch=master)](https://travis-ci.org/mhutter/teamdrive_api)
 
 Client library for the TeamDrive XML API.
 
