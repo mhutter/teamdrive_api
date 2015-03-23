@@ -3,4 +3,7 @@ require 'teamdrive_api'
 
 gem 'minitest'
 require 'minitest/autorun'
-require 'minitest/pride'
+require 'pry'
+require 'webmock/minitest'
+
+WebMock.disable_net_connect!

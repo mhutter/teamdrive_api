@@ -29,6 +29,15 @@ class TestTeamdriveApiBase < Minitest::Test
     end
   end
 
+  def test_nil_in_query
+    expected = %q{<?xml version='1.0' encoding='UTF-8' ?><teamdrive><apiversion>api_version</apiversion><command>my_command</command><requesttime>0</requesttime><username>foo</username></teamdrive>}
+
+    Time.stub :now, Time.at(0) do
+      actual = r.payload_for(:my_command, username: 'foo', second: nil)
+      assert_equal expected, actual
+    end
+  end
+
   def test_boolean_query_options
     expected_true = %q{<?xml version='1.0' encoding='UTF-8' ?><teamdrive><apiversion>api_version</apiversion><command>my_command</command><requesttime>0</requesttime><true>$true</true></teamdrive>}
     expected_false = %q{<?xml version='1.0' encoding='UTF-8' ?><teamdrive><apiversion>api_version</apiversion><command>my_command</command><requesttime>0</requesttime><false>$false</false></teamdrive>}

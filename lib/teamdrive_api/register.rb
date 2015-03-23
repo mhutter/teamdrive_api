@@ -9,5 +9,13 @@ module TeamdriveApi
       super
       @uri = URI.join(@host + '/', 'pbas/td2api/api/api.htm').to_s
     end
+
+    def remove_user(username, delete_license = false, distributor = nil)
+      send_request :removeuser, {
+        username: username,
+        delete_license: delete_license,
+        distributor: distributor
+      }
+    end
   end
 end

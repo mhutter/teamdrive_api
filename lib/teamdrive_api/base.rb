@@ -1,8 +1,12 @@
+require 'digest'
+require 'httparty'
 require 'uri'
 
 module TeamdriveApi
   class Base # :nodoc:
+    include ::HTTParty
     attr_reader :uri
+    format :xml
 
     def initialize(host, api_checksum_salt, api_version)
       @api_checksum_salt, @api_version = api_checksum_salt, api_version
@@ -18,11 +22,33 @@ module TeamdriveApi
       out << "<command>#{command}</command>"
       out << "<requesttime>#{Time.now.to_i}</requesttime>"
       query.each do |k,v|
+        next if v.nil?
         v = v.to_s
         v = %w{true false}.include?(v) ? '$' + v : v
         out << "<#{k}>#{v}</#{k}>"
       end
       out << '</teamdrive>'
+    end
+
+    private
+
+    def send_request(command, data = {})
+      body = payload_for(command, data)
+      res = self.class.post @uri,
+        headers: { 'User-Agent' => "TeamdriveApi v#{TeamdriveApi::VERSION}" },
+        body: body,
+        query: {
+          checksum: Digest::MD5.hexdigest(body + @api_checksum_salt)
+        }
+
+      res = res['teamdrive']
+      unless res['exception'].nil?
+        fail TeamdriveApi::Error.new(
+          res['exception']['primarycode'],
+          res['exception']['message']
+        )
+      end
+      res
     end
   end
 end
