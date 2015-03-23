@@ -24,5 +24,22 @@ module TeamdriveApi
       }
       return res[:intresult].eql?('0')
     end
+
+    # Search user
+    #
+    # @param [Hash] query the search query.
+    # @option query [String] :username
+    # @option query [String] :email
+    # @option query [String] :startid (0)
+    # @option query [Boolean] :showdevice (false)
+    # @option query [Boolean] :onlyownusers (false)
+    def search_user(query = {})
+      fail ArgumentError if query.keys.length < 1
+      query = {
+        showdevice: false,
+        onlyownusers: false
+      }.merge(query)
+      send_request :searchuser, query
+    end
   end
 end

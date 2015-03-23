@@ -37,4 +37,20 @@ class TestRegister < Minitest::Test
       assert_equal 'Username doe not exists', e.msg
     end
   end
+
+  def test_search_user
+    body = '<teamdrive><apiversion>1.0.005</apiversion></teamdrive>'
+
+    stub = stub_request(:post, /example\.com/).
+      with(body: /searchuser.*\$false.*\$false.*<username>foobar<\/username>/).
+      to_return(status: 200, body: body)
+    r.search_user(username: 'foobar')
+    assert_requested stub
+
+    stub = stub_request(:post, /example\.com/).
+      with(body: /searchuser.*\$true.*\$true.*<email>\*@example.com<\/email>/).
+      to_return(status: 200, body: body)
+    r.search_user(email: '*@example.com', showdevice: true, onlyownusers: true)
+    assert_requested stub
+  end
 end
