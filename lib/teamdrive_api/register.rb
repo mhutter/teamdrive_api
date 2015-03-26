@@ -11,6 +11,15 @@ module TeamdriveApi
       @uri = URI.join(@host + '/', 'pbas/td2api/api/api.htm').to_s
     end
 
+    # Assign user to license (added in 1.0.003)
+    #
+    # @param [String] username
+    # @param [String] number License Number
+    def assign_user_to_license(username, number)
+      res = send_request :assignusertolicense, username: username, number: number
+      res[:intresult].eql?('0')
+    end
+
     # Create license without user (added in 1.0.003)
     #
     # @param [Hash] opts license options

@@ -71,4 +71,17 @@ class TestRegister < Minitest::Test
     end
     assert_equal 'Provide all of "productname", "type", "featurevalue"', e.message
   end
+
+  def test_assign_user_to_license
+    response_body = %q{<?xml version='1.0' encoding='UTF-8' ?><teamdrive><apiversion>1.0.005</apiversion><intresult>0</intresult></teamdrive>}
+
+    request = stub_request(:post, 'https://example.com/pbas/td2api/api/api.htm?checksum=b6266e47a8fc75be2cc791e47621c4b7').
+      with(:body => /assignusertolicense.*<username>foo.*<number>12345/).
+      to_return(:status => 200, :body => response_body, :headers => {})
+
+    Time.stub :now, Time.at(0) do
+      assert r.assign_user_to_license('foo', 12345)
+      assert_requested request
+    end
+  end
 end
