@@ -36,9 +36,19 @@ module TeamdriveApi
     # +ArgumentError+ if not so.
     def require_one(of: [], in_hash: {})
       keys = [of].flatten
-      unless keys.any? { |k| in_hash.keys.include?(k) }
+      unless keys.any? { |k| in_hash.has_key?(k) }
         msg = keys.map { |k| %Q{"#{k}"} }.join(', ')
-        fail ArgumentError, "Provide at least one of #{msg}."
+        fail ArgumentError, "Provide at least one of #{msg}"
+      end
+    end
+
+    # make sure all of the keys in +of+ exists in +in_hash+. Raise an
+    # +ArgumentError+ if not so.
+    def require_all(of: [], in_hash: {})
+      keys = [of].flatten
+      unless keys.all? { |k| in_hash.has_key?(k) }
+        msg = keys.map { |k| %Q{"#{k}"} }.join(', ')
+        fail ArgumentError, "Provide all of #{msg}"
       end
     end
 

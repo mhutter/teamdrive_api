@@ -58,6 +58,17 @@ class TestRegister < Minitest::Test
     e = assert_raises ArgumentError do
       r.search_user {}
     end
-    assert_equal 'Provide at least one of "username", "email".', e.message
+    assert_equal 'Provide at least one of "username", "email"', e.message
+    e = assert_raises ArgumentError do
+      r.search_user({showdevice: false, onlyownusers: false})
+    end
+    assert_equal 'Provide at least one of "username", "email"', e.message
+  end
+
+  def test_create_license_without_user_raises_with_incomplete_query
+    e = assert_raises ArgumentError do
+      r.create_license_without_user {}
+    end
+    assert_equal 'Provide all of "productname", "type", "featurevalue"', e.message
   end
 end

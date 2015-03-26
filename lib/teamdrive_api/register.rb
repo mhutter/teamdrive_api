@@ -11,6 +11,23 @@ module TeamdriveApi
       @uri = URI.join(@host + '/', 'pbas/td2api/api/api.htm').to_s
     end
 
+    # Create license without user (added in 1.0.003)
+    #
+    # @param [Hash] opts license options
+    # @option opts [String] :productname +server+, +client+
+    # @option opts [String] :type +monthly+ / +yearly+ / +permanent+
+    # @option opts [String] :featurevalue one of +webdavs+, +personal+, +professional+, +enterprise+
+    # @option opts [String] :limit Amount (for a client license)
+    # @option opts [String] :licensereference An optional external reference. Added with v1.0.004
+    # @option opts [String] :contactnumber An optional contact number. Added with v1.0.004
+    # @option opts [String] :validuntil An optional valid-until date. Format must be +DD.MM.YYYY+. Added with v1.0.004
+    # @option opts [String] :changeid An optional change id for license changes. Added with v1.0.004
+    def create_license_without_user(opts = {})
+      require_all of: [:productname, :type, :featurevalue], in_hash: opts
+      res = send_request :createlicensewithoutuser, opts
+      return res[:intresult].eql?('0')
+    end
+
     # Remove user (added in +1.0.003+)
     #
     # @param [String] username to be deleted
