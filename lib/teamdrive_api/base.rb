@@ -33,22 +33,23 @@ module TeamdriveApi
 
     private
 
+    def check_for(method, hash, params, message)
+      keys = [params].flatten
+      return if keys.send(method) { |k| hash.key?(k) }
+      msg = keys.map { |k| %("#{k}") }.join(', ')
+      fail ArgumentError, "Provide #{message} of #{msg}"
+    end
+
     # make sure at least one of the keys in +of+ exists in +in_hash+. Raise an
     # +ArgumentError+ if not so.
     def require_one(of: [], in_hash: {})
-      keys = [of].flatten
-      return if keys.any? { |k| in_hash.key?(k) }
-      msg = keys.map { |k| %("#{k}") }.join(', ')
-      fail ArgumentError, "Provide at least one of #{msg}"
+      check_for(:any?, in_hash, of, 'at least one')
     end
 
     # make sure all of the keys in +of+ exists in +in_hash+. Raise an
     # +ArgumentError+ if not so.
     def require_all(of: [], in_hash: {})
-      keys = [of].flatten
-      return if keys.all? { |k| in_hash.key?(k) }
-      msg = keys.map { |k| %("#{k}") }.join(', ')
-      fail ArgumentError, "Provide all of #{msg}"
+      check_for(:all?, in_hash, of, 'all')
     end
 
     def send_request(command, data = {})
