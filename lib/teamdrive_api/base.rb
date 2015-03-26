@@ -3,6 +3,7 @@ require 'httparty'
 require 'uri'
 
 module TeamdriveApi
+  # API-Baseclass for all XML RPC APIs
   class Base # :nodoc:
     include ::HTTParty
     attr_reader :uri
@@ -16,15 +17,15 @@ module TeamdriveApi
     # Generates the XML payload for the RPC
     def payload_for(command, query = {})
       out = ''
-      out << %q{<?xml version='1.0' encoding='UTF-8' ?>}
+      out << "<?xml version='1.0' encoding='UTF-8' ?>"
       out << '<teamdrive>'
       out << "<apiversion>#{@api_version}</apiversion>"
       out << "<command>#{command}</command>"
       out << "<requesttime>#{Time.now.to_i}</requesttime>"
-      query.each do |k,v|
+      query.each do |k, v|
         next if v.nil?
         v = v.to_s
-        v = %w{true false}.include?(v) ? '$' + v : v
+        v = %w(true false).include?(v) ? '$' + v : v
         out << "<#{k}>#{v}</#{k}>"
       end
       out << '</teamdrive>'
@@ -36,20 +37,18 @@ module TeamdriveApi
     # +ArgumentError+ if not so.
     def require_one(of: [], in_hash: {})
       keys = [of].flatten
-      unless keys.any? { |k| in_hash.has_key?(k) }
-        msg = keys.map { |k| %Q{"#{k}"} }.join(', ')
-        fail ArgumentError, "Provide at least one of #{msg}"
-      end
+      return if keys.any? { |k| in_hash.key?(k) }
+      msg = keys.map { |k| %("#{k}") }.join(', ')
+      fail ArgumentError, "Provide at least one of #{msg}"
     end
 
     # make sure all of the keys in +of+ exists in +in_hash+. Raise an
     # +ArgumentError+ if not so.
     def require_all(of: [], in_hash: {})
       keys = [of].flatten
-      unless keys.all? { |k| in_hash.has_key?(k) }
-        msg = keys.map { |k| %Q{"#{k}"} }.join(', ')
-        fail ArgumentError, "Provide all of #{msg}"
-      end
+      return if keys.all? { |k| in_hash.key?(k) }
+      msg = keys.map { |k| %("#{k}") }.join(', ')
+      fail ArgumentError, "Provide all of #{msg}"
     end
 
     def send_request(command, data = {})
@@ -57,16 +56,12 @@ module TeamdriveApi
       res = self.class.post @uri,
         headers: { 'User-Agent' => "TeamdriveApi v#{TeamdriveApi::VERSION}" },
         body: body,
-        query: {
-          checksum: Digest::MD5.hexdigest(body + @api_checksum_salt)
-        }
+        query: { checksum: Digest::MD5.hexdigest(body + @api_checksum_salt) }
 
       res = res['teamdrive'].symbolize_keys
       unless res[:exception].nil?
-        fail TeamdriveApi::Error.new(
-          res[:exception][:primarycode],
-          res[:exception][:message]
-        )
+        fail TeamdriveApi::Error.new res[:exception][:primarycode],
+                                     res[:exception][:message]
       end
       res
     end

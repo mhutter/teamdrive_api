@@ -25,7 +25,7 @@ module TeamdriveApi
     def create_license_without_user(opts = {})
       require_all of: [:productname, :type, :featurevalue], in_hash: opts
       res = send_request :createlicensewithoutuser, opts
-      return res[:intresult].eql?('0')
+      res[:intresult].eql?('0')
     end
 
     # Get User Data
@@ -43,14 +43,15 @@ module TeamdriveApi
     #
     # @param [String] username to be deleted
     # @param [Boolean] delete the user's license aswell
-    # @param [String] distributor will only be used if allowed by the API (see +APIAllowSettingDistributor+ in the Teamdrive Register docs).
+    # @param [String] distributor will only be used if allowed by the API (see
+    #   +APIAllowSettingDistributor+ in the Teamdrive Register docs).
     def remove_user(username, delete_license = false, distributor = nil)
-      res = send_request :removeuser, {
+      res = send_request :removeuser,
         username: username,
         delete_license: delete_license,
         distributor: distributor
-      }
-      return res[:intresult].eql?('0')
+
+      res[:intresult].eql?('0')
     end
 
     # Search user
