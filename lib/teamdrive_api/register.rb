@@ -34,7 +34,7 @@ module TeamdriveApi
     # @option query [Boolean] :showdevice (false)
     # @option query [Boolean] :onlyownusers (false)
     def search_user(query = {})
-      fail ArgumentError if query.keys.length < 1
+      require_one of: [:username, :email], in_hash: query
       query = {
         showdevice: false,
         onlyownusers: false

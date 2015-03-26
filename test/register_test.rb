@@ -32,10 +32,10 @@ class TestRegister < Minitest::Test
       with(body: /removeuser/).
       to_return(status: 200, body: response_body)
 
-    assert_raises TeamdriveApi::Error do |e|
+    e = assert_raises TeamdriveApi::Error do
       r.remove_user('unknown')
-      assert_equal 'Username doe not exists', e.msg
     end
+    assert_equal 'Username does not exists', e.message
   end
 
   def test_search_user
@@ -52,5 +52,12 @@ class TestRegister < Minitest::Test
       to_return(status: 200, body: body)
     r.search_user(email: '*@example.com', showdevice: true, onlyownusers: true)
     assert_requested stub
+  end
+
+  def test_search_users_raises_with_empty_query
+    e = assert_raises ArgumentError do
+      r.search_user {}
+    end
+    assert_equal 'Provide at least one of "username", "email".', e.message
   end
 end

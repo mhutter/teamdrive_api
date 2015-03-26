@@ -32,6 +32,16 @@ module TeamdriveApi
 
     private
 
+    # make sure at least one of the keys in +of+ exists in +in_hash+. Raise an
+    # +ArgumentError+ if not so.
+    def require_one(of: [], in_hash: {})
+      keys = [of].flatten
+      unless keys.any? { |k| in_hash.keys.include?(k) }
+        msg = keys.map { |k| %Q{"#{k}"} }.join(', ')
+        fail ArgumentError, "Provide at least one of #{msg}."
+      end
+    end
+
     def send_request(command, data = {})
       body = payload_for(command, data)
       res = self.class.post @uri,
