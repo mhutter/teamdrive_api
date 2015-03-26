@@ -1,4 +1,8 @@
-# TeamdriveApi [![Build Status](https://travis-ci.org/mhutter/teamdrive_api.svg?branch=master)](https://travis-ci.org/mhutter/teamdrive_api)
+# TeamdriveApi
+
+[![Build Status](https://travis-ci.org/mhutter/teamdrive_api.svg?branch=master)](https://travis-ci.org/mhutter/teamdrive_api)
+[![Code Climate](https://codeclimate.com/github/mhutter/teamdrive_api/badges/gpa.svg)](https://codeclimate.com/github/mhutter/teamdrive_api)
+[![Test Coverage](https://codeclimate.com/github/mhutter/teamdrive_api/badges/coverage.svg)](https://codeclimate.com/github/mhutter/teamdrive_api)
 
 Client library for the TeamDrive XML API.
 
