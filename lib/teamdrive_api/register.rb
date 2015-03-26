@@ -28,6 +28,17 @@ module TeamdriveApi
       return res[:intresult].eql?('0')
     end
 
+    # Get User Data
+    #
+    # @param [String] username
+    # @param [String] distributor (optional, added in API release 1.0.003)
+    def get_user_data(username, distributor = nil)
+      send_request(:getuserdata, {
+        username: username,
+        distributor: distributor
+      })
+    end
+
     # Remove user (added in +1.0.003+)
     #
     # @param [String] username to be deleted
