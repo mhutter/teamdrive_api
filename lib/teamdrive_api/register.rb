@@ -11,16 +11,17 @@ module TeamdriveApi
       @uri = URI.join(@host + '/', 'pbas/td2api/api/api.htm').to_s
     end
 
-    # Assign user to license (added in 1.0.003)
+    # Assign user to license (added in RegServ API v1.0.003)
     #
     # @param [String] username
     # @param [String] number License Number
+    # @return [Boolean] success?
     def assign_user_to_license(username, number)
       res = send_request :assignusertolicense, username: username, number: number
       res[:intresult].eql?('0')
     end
 
-    # Create license without user (added in 1.0.003)
+    # Create license without user (added in RegServ API v1.0.003)
     #
     # @param [Hash] opts license options
     # @option opts [String] :productname +server+, +client+
@@ -31,6 +32,7 @@ module TeamdriveApi
     # @option opts [String] :contactnumber An optional contact number. Added with v1.0.004
     # @option opts [String] :validuntil An optional valid-until date. Format must be +DD.MM.YYYY+. Added with v1.0.004
     # @option opts [String] :changeid An optional change id for license changes. Added with v1.0.004
+    # @return [Boolean] success?
     def create_license_without_user(opts = {})
       require_all of: [:productname, :type, :featurevalue], in_hash: opts
       res = send_request :createlicensewithoutuser, opts
@@ -40,7 +42,8 @@ module TeamdriveApi
     # Get User Data
     #
     # @param [String] username
-    # @param [String] distributor (optional, added in API release 1.0.003)
+    # @param [String] distributor (optional, added in RegServ API v1.0.003)
+    # @return [Hash] the user data
     def get_user_data(username, distributor = nil)
       send_request(:getuserdata, {
         username: username,
@@ -48,12 +51,13 @@ module TeamdriveApi
       })
     end
 
-    # Remove user (added in +1.0.003+)
+    # Remove user (added in RegServ API v1.0.003)
     #
     # @param [String] username to be deleted
     # @param [Boolean] delete the user's license aswell
     # @param [String] distributor will only be used if allowed by the API (see
     #   +APIAllowSettingDistributor+ in the Teamdrive Register docs).
+    # @return [Boolean] success?
     def remove_user(username, delete_license = false, distributor = nil)
       res = send_request :removeuser,
         username: username,
@@ -71,6 +75,7 @@ module TeamdriveApi
     # @option query [String] :startid (0)
     # @option query [Boolean] :showdevice (false)
     # @option query [Boolean] :onlyownusers (false)
+    # @return [Hash] list of users
     def search_user(query = {})
       require_one of: [:username, :email], in_hash: query
       query = {

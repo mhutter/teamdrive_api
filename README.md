@@ -34,7 +34,42 @@ api = TeamdriveApi::Register.new('example.com', 'd3b07384d113edec49eaa6238ad5ff0
 
 api.remove_user 'foobar'
 #=> true
+
+api.search_user username: '$CODE-*'
+#=> {:apiversion=>"1.0.005",
+#=>  :searchresult=>{:current=>"3", :maximum=>"50", :total=>"3"},
+#=>  :userlist=>
+#=>   {:user=>
+#=>     [{:userid=>"2",
+#=>       :username=>"$CODE-1002",
+#=>       :email=>"user2@example.com",
+#=>       :reference=>nil,
+#=>       :department=>nil,
+#=>       :language=>"en",
+#=>       :distributor=>"CODE",
+#=>       :usercreated=>"07/25/2014 15:06:41.00",
+#=>       :status=>"activated"},
+#=>      {:userid=>"10",
+#=>       :username=>"$CODE-1010",
+#=>       :email=>"user10@example.com",
+#=>       :reference=>nil,
+#=>       :department=>nil,
+#=>       :language=>"en",
+#=>       :distributor=>"CODE",
+#=>       :usercreated=>"10/01/2014 09:31:49.00",
+#=>       :status=>"activated"},
+#=>      {:userid=>"15",
+#=>       :username=>"$CODE-1015",
+#=>       :email=>"user15@example.com",
+#=>       :reference=>nil,
+#=>       :department=>nil,
+#=>       :language=>"en",
+#=>       :distributor=>"CODE",
+#=>       :usercreated=>"03/04/2015 13:39:09.00",
+#=>       :status=>"activated"}]}}
 ```
+
+For more Information see {TeamdriveApi::Register}
 
 ## Development
 
