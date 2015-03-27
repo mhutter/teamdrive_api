@@ -38,7 +38,7 @@ class TestRegister < Minitest::Test
   end
 
   def test_search_user
-    response_body = '<teamdrive><apiversion>1.0.005</apiversion></teamdrive>'
+    response_body = open(File.expand_path('../fixtures/search_user.xml', __FILE__)).read
 
     stub = stub_request(:post, /example\.com/).
       with(body: /searchuser.*\$false.*\$false.*<username>foobar<\/username>/).
