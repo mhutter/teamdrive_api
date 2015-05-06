@@ -62,6 +62,7 @@ module TeamdriveApi
       res = res['teamdrive'].symbolize_keys
       unless res[:exception].nil?
         fail TeamdriveApi::Error.new res[:exception][:primarycode],
+                                     res[:exception][:secondarycode],
                                      res[:exception][:message]
       end
       res
