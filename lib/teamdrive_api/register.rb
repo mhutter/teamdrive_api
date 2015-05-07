@@ -11,6 +11,17 @@ module TeamdriveApi
       @uri = URI.join(@host + '/', 'pbas/td2api/api/api.htm').to_s
     end
 
+    # Assign license to client (added in RegServ API 1.0.004)
+    #
+    # @param [String] username
+    # @param [String] number License Number
+    # @param [Array] devices optional list of devices the user posses. If empty, all of the user’s devices will be used
+    # @return [Boolean] success?
+    def assign_license_to_client(username, number, devices = [])
+      res = send_request :assignlicensetoclient, username: username, number: number, devices: devices
+      res[:intresult].eql?(0)
+    end
+
     # Assign user to license (added in RegServ API v1.0.003)
     #
     # @param [String] username
@@ -32,11 +43,36 @@ module TeamdriveApi
     # @option opts [String] :contactnumber An optional contact number. Added with v1.0.004
     # @option opts [String] :validuntil An optional valid-until date. Format must be +DD.MM.YYYY+. Added with v1.0.004
     # @option opts [String] :changeid An optional change id for license changes. Added with v1.0.004
-    # @return [Boolean] success?
+    # @return [Hash] The created license?
     def create_license_without_user(opts = {})
       require_all of: [:productname, :type, :featurevalue], in_hash: opts
-      res = send_request :createlicensewithoutuser, opts
-      res[:intresult].eql?('0')
+      send_request :createlicensewithoutuser, opts
+    end
+
+    # Get default-license for a user
+    #
+    # @param [String] username
+    # @param [String] distributor (optional)
+    # @return [Hash] the license data
+    def get_default_license_for_user(username, distributor = nil)
+      res = send_request(:getdefaultlicense, {
+        username: username,
+        distributor: distributor
+      })
+      res[:licensedata]
+    end
+
+    # Get license data for a user
+    #
+    # @param [String] username
+    # @param [String] distributor (optional)
+    # @return [Hash] the license data
+    def get_license_data_for_user(username, distributor = nil)
+      res = send_request(:getlicensedata, {
+        username: username,
+        distributor: distributor
+      })
+      res[:licensedata]
     end
 
     # Get User Data
@@ -50,6 +86,28 @@ module TeamdriveApi
         distributor: distributor
       })
     end
+
+    # Create a new Account
+    #
+    # @note The range of possible Usernames depend on the +RegNameComplexity+
+    #   setting as described in the Registration Server documentation.
+    #   Similary, the length of passwords can be restricted by the
+    #   +ClientPasswordLength+ setting. However, these restriction only apply
+    #   when creating a new account, they will not be checked when a user
+    #   attempts to log in.
+    #
+    # @param [Hash] Data for the new user.
+    # @option opts [String] :username
+    # @option opts [String] :useremail
+    # @option opts [String] :password
+    # @option opts [String] :language
+    # @option opts [String] :reference
+    # @option opts [String] :department
+    # @option opts [String] :distributor
+    def register_user(opts = {})
+      send_request(:registeruser, opts)
+    end
+    alias_method :create_account, :register_user
 
     # Remove user (added in RegServ API v1.0.003)
     #
