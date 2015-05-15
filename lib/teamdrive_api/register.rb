@@ -100,12 +100,15 @@ module TeamdriveApi
     # @option opts [String] :username
     # @option opts [String] :useremail
     # @option opts [String] :password
-    # @option opts [String] :language
-    # @option opts [String] :reference
-    # @option opts [String] :department
-    # @option opts [String] :distributor
+    # @option opts [String] :language (optional)
+    # @option opts [String] :reference (optional)
+    # @option opts [String] :department (optional)
+    # @option opts [String] :distributor (optional)
+    # @return [Boolean] +true+ if the User has been created
     def register_user(opts = {})
+      require_all of: [:username, :useremail, :password], in_hash: opts
       send_request(:registeruser, opts)
+      res[:intresult].eql?('0')
     end
     alias_method :create_account, :register_user
 
