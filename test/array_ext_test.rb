@@ -1,7 +1,8 @@
 require 'test_helper'
 
 class TestArrayExt < Minitest::Test
-  BEFORE = [{
+  BEFORE = [
+    {
       'foo' => 'bar',
       'num' => {
         'first' => 1,
@@ -11,7 +12,8 @@ class TestArrayExt < Minitest::Test
     'bar',
     :baz]
 
-  EXPECTED = [{
+  EXPECTED = [
+    {
       foo: 'bar',
       num: {
         first: 1,

@@ -1,10 +1,12 @@
 module TeamdriveApi
-  # API Client for the TeamDrive Register Server. See the TeamDrive Register docs for more informations on specific commands.
+  # API Client for the TeamDrive Register Server. See the TeamDrive Register
+  # docs for more informations on specific commands.
   class Register < Base
     # Create a new Register API Client.
     #
     # @param [String] host the API Server
-    # @param [String] api_checksum_salt the +APIChecksumSalt+ system setting ("Edit Settings -> RegServer").
+    # @param [String] api_checksum_salt the +APIChecksumSalt+ system setting
+    #   ("Edit Settings -> RegServer").
     # @param [String] api_version optionally overwrite the api_version
     def initialize(host, api_checksum_salt, api_version = '1.0.005')
       super
@@ -15,10 +17,15 @@ module TeamdriveApi
     #
     # @param [String] username
     # @param [String] number License Number
-    # @param [Array] devices optional list of devices the user posses. If empty, all of the user’s devices will be used
+    # @param [Array] devices optional list of devices the user posses. If
+    #   empty, all of the user's devices will be used
     # @return [Boolean] success?
     def assign_license_to_client(username, number, devices = [])
-      res = send_request :assignlicensetoclient, username: username, number: number, devices: devices
+      res = send_request :assignlicensetoclient,
+                         username: username,
+                         number: number,
+                         devices: devices
+
       res[:intresult].eql?(0)
     end
 
@@ -28,7 +35,10 @@ module TeamdriveApi
     # @param [String] number License Number
     # @return [Boolean] success?
     def assign_user_to_license(username, number)
-      res = send_request :assignusertolicense, username: username, number: number
+      res = send_request :assignusertolicense,
+                         username: username,
+                         number: number
+
       res[:intresult].eql?('0')
     end
 
@@ -38,16 +48,21 @@ module TeamdriveApi
     # @option opts [String] :username User to assign license to
     # @option opts [String] :productname +server+, +client+
     # @option opts [String] :type +monthly+ / +yearly+ / +permanent+
-    # @option opts [String] :featurevalue one of +webdavs+, +personal+, +professional+, +enterprise+
+    # @option opts [String] :featurevalue one of +webdavs+, +personal+,
+    #   +professional+, +enterprise+
     # @option opts [String] :limit Amount (for a client license)
-    # @option opts [String] :licensereference An optional external reference. Added with v1.0.004
-    # @option opts [String] :contactnumber An optional contact number. Added with v1.0.004
-    # @option opts [String] :validuntil An optional valid-until date. Format must be +DD.MM.YYYY+. Added with v1.0.004
-    # @option opts [String] :changeid An optional change id for license changes. Added with v1.0.004
+    # @option opts [String] :licensereference An optional external reference.
+    #   Added with v1.0.004
+    # @option opts [String] :contactnumber An optional contact number. Added
+    #   with v1.0.004
+    # @option opts [String] :validuntil An optional valid-until date. Format
+    #   must be +DD.MM.YYYY+. Added with v1.0.004
+    # @option opts [String] :changeid An optional change id for license changes.
+    #   Added with v1.0.004
     # @return [Hash] The created license?
     def create_license(opts = {})
       require_all of: [:username, :productname, :type, :featurevalue],
-        in_hash: opts
+                  in_hash: opts
       send_request :createlicense
     end
 
@@ -65,10 +80,10 @@ module TeamdriveApi
     # @param [String] distributor (optional)
     # @return [Hash] the license data
     def get_default_license_for_user(username, distributor = nil)
-      res = send_request(:getdefaultlicense, {
-        username: username,
-        distributor: distributor
-      })
+      res = send_request :getdefaultlicense,
+                         username: username,
+                         distributor: distributor
+
       res[:licensedata]
     end
 
@@ -78,10 +93,10 @@ module TeamdriveApi
     # @param [String] distributor (optional)
     # @return [Hash] the license data
     def get_license_data_for_user(username, distributor = nil)
-      res = send_request(:getlicensedata, {
-        username: username,
-        distributor: distributor
-      })
+      res = send_request :getlicensedata,
+                         username: username,
+                         distributor: distributor
+
       res[:licensedata]
     end
 
@@ -91,10 +106,9 @@ module TeamdriveApi
     # @param [String] distributor (optional, added in RegServ API v1.0.003)
     # @return [Hash] the user data
     def get_user_data(username, distributor = nil)
-      send_request(:getuserdata, {
-        username: username,
-        distributor: distributor
-      })
+      send_request :getuserdata,
+                   username: username,
+                   distributor: distributor
     end
 
     # Create a new Account
@@ -131,9 +145,9 @@ module TeamdriveApi
     # @return [Boolean] success?
     def remove_user(username, delete_license = false, distributor = nil)
       res = send_request :removeuser,
-        username: username,
-        delete_license: delete_license,
-        distributor: distributor
+                         username: username,
+                         delete_license: delete_license,
+                         distributor: distributor
 
       res[:intresult].eql?('0')
     end

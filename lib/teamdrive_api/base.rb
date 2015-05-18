@@ -4,34 +4,39 @@ require 'uri'
 
 module TeamdriveApi
   # API-Baseclass for all XML RPC APIs
-  class Base # :nodoc:
+  class Base
     include ::HTTParty
     attr_reader :uri
     format :xml
 
     def initialize(host, api_checksum_salt, api_version)
-      @api_checksum_salt, @api_version = api_checksum_salt, api_version
+      @api_checksum_salt = api_checksum_salt
+      @api_version       = api_version
       @host = host.start_with?('http') ? host : 'https://' + host
     end
 
     # Generates the XML payload for the RPC
     def payload_for(command, query = {})
-      out = ''
-      out << "<?xml version='1.0' encoding='UTF-8' ?>"
-      out << '<teamdrive>'
-      out << "<apiversion>#{@api_version}</apiversion>"
-      out << "<command>#{command}</command>"
-      out << "<requesttime>#{Time.now.to_i}</requesttime>"
+      out = header_for(command)
       query.each do |k, v|
         next if v.nil?
         v = v.to_s
-        v = %w(true false).include?(v) ? '$' + v : v
+        v = '$' + v if %w(true false).include?(v)
         out << "<#{k}>#{v}</#{k}>"
       end
       out << '</teamdrive>'
     end
 
     private
+
+    # Generates the XML header for the RPC
+    def header_for(command)
+      out = "<?xml version='1.0' encoding='UTF-8' ?>"
+      out << '<teamdrive>'
+      out << "<apiversion>#{@api_version}</apiversion>"
+      out << "<command>#{command}</command>"
+      out << "<requesttime>#{Time.now.to_i}</requesttime>"
+    end
 
     def check_for(method, hash, params, message)
       keys = [params].flatten
@@ -52,20 +57,26 @@ module TeamdriveApi
       check_for(:all?, in_hash, of, 'all')
     end
 
+    # actually send a HTTP request
     def send_request(command, data = {})
       body = payload_for(command, data)
-      res = self.class.post @uri,
+      res = self.class.post(
+        @uri,
         headers: { 'User-Agent' => "TeamdriveApi v#{TeamdriveApi::VERSION}" },
         body: body,
         query: { checksum: Digest::MD5.hexdigest(body + @api_checksum_salt) }
+      )
 
-      res = res['teamdrive'].symbolize_keys
-      unless res[:exception].nil?
-        fail TeamdriveApi::Error.new res[:exception][:primarycode],
-                                     res[:exception][:secondarycode],
-                                     res[:exception][:message]
+      return_or_fail res['teamdrive'].symbolize_keys
+    end
+
+    def return_or_fail(response)
+      unless response[:exception].nil?
+        fail TeamdriveApi::Error.new response[:exception][:primarycode],
+                                     response[:exception][:secondarycode],
+                                     response[:exception][:message]
       end
-      res
+      response
     end
   end
 end

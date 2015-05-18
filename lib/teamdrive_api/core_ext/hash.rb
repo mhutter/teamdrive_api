@@ -1,4 +1,4 @@
-class Hash
+class Hash # :nodoc:
   # Returns a new hash with all keys converted to symbols, as long as
   # they respond to +to_sym+.
   #
@@ -10,9 +10,9 @@ class Hash
   # Borrowed from ActiveSupport.
   def symbolize_keys
     result = self.class.new
-    each_key do |key|
-      new_key = key.to_sym rescue key
-      new_value = self[key].symbolize_keys rescue self[key]
+    each do |key, val|
+      new_key = key.respond_to?(:to_sym) ? key.to_sym : key
+      new_value = val.respond_to?(:symbolize_keys) ? val.symbolize_keys : val
       result[new_key] = new_value
     end
     result
@@ -23,10 +23,11 @@ class Hash
   #
   # Borrowed from ActiveSupport.
   def symbolize_keys!
+    # we have to use `keys.each` because we can't modify a Hash during `each`
     keys.each do |key|
-      new_key = key.to_sym rescue key
-      old_value = delete(key)
-      new_value = old_value.symbolize_keys! rescue old_value
+      new_key = key.respond_to?(:to_sym) ? key.to_sym : key
+      val = delete(key)
+      new_value = val.respond_to?(:symbolize_keys!) ? val.symbolize_keys! : val
       self[new_key] = new_value
     end
     self

@@ -4,7 +4,9 @@ module TeamdriveApi
     attr_reader :code, :secondarycode, :message
     def initialize(code, secondarycode, message)
       super message
-      @code, @secondarycode, @message = code, secondarycode, message
+      @code          = code
+      @secondarycode = secondarycode
+      @message       = message
     end
   end
 end

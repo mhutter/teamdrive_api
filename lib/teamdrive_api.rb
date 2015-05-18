@@ -5,5 +5,6 @@ require 'teamdrive_api/error'
 require 'teamdrive_api/base'
 require 'teamdrive_api/register'
 
+# TeamDrive API Client
 module TeamdriveApi
 end

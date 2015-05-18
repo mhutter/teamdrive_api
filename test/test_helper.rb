@@ -1,5 +1,5 @@
 if ENV['CODECLIMATE_REPO_TOKEN']
-  require "codeclimate-test-reporter"
+  require 'codeclimate-test-reporter'
   CodeClimate::TestReporter.start
 end
 
@@ -12,3 +12,8 @@ require 'pry'
 require 'webmock/minitest'
 
 WebMock.disable_net_connect! allow: 'codeclimate.com'
+
+# read and return the contents of an xml file
+def xml_fixture(name)
+  open(File.expand_path("../fixtures/#{name}.xml", __FILE__)).read
+end
