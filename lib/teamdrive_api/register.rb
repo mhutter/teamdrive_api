@@ -32,9 +32,10 @@ module TeamdriveApi
       res[:intresult].eql?('0')
     end
 
-    # Create license without user (added in RegServ API v1.0.003)
+    # Create a license and assign it to a user.
     #
     # @param [Hash] opts license options
+    # @option opts [String] :username User to assign license to
     # @option opts [String] :productname +server+, +client+
     # @option opts [String] :type +monthly+ / +yearly+ / +permanent+
     # @option opts [String] :featurevalue one of +webdavs+, +personal+, +professional+, +enterprise+
@@ -44,6 +45,15 @@ module TeamdriveApi
     # @option opts [String] :validuntil An optional valid-until date. Format must be +DD.MM.YYYY+. Added with v1.0.004
     # @option opts [String] :changeid An optional change id for license changes. Added with v1.0.004
     # @return [Hash] The created license?
+    def create_license(opts = {})
+      require_all of: [:username, :productname, :type, :featurevalue],
+        in_hash: opts
+      send_request :createlicense
+    end
+
+    # Create license without user (added in RegServ API v1.0.003)
+    #
+    # @see #create_license
     def create_license_without_user(opts = {})
       require_all of: [:productname, :type, :featurevalue], in_hash: opts
       send_request :createlicensewithoutuser, opts
