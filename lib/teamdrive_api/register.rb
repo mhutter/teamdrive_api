@@ -26,7 +26,7 @@ module TeamdriveApi
                          number: number,
                          devices: devices
 
-      res[:intresult].eql?(0)
+      res[:intresult].eql?('0')
     end
 
     # Assign user to license (added in RegServ API v1.0.003)
@@ -50,8 +50,8 @@ module TeamdriveApi
     # @option opts [String] :type +monthly+ / +yearly+ / +permanent+
     # @option opts [String] :featurevalue one of +webdavs+, +personal+,
     #   +professional+, +enterprise+
-    # @option opts [String] :limit Amount (for a client license)
-    # @option opts [String] :licensereference An optional external reference.
+    # @option opts [String] :limit Amount, only for client licenses
+    # @option opts [String] :licensereference An _optional_ external reference.
     #   Added with v1.0.004
     # @option opts [String] :contactnumber An optional contact number. Added
     #   with v1.0.004
@@ -59,11 +59,12 @@ module TeamdriveApi
     #   must be +DD.MM.YYYY+. Added with v1.0.004
     # @option opts [String] :changeid An optional change id for license changes.
     #   Added with v1.0.004
-    # @return [Hash] The created license?
+    # @return [String] The license number of the created license
     def create_license(opts = {})
       require_all of: [:username, :productname, :type, :featurevalue],
                   in_hash: opts
-      send_request :createlicense
+      res = send_request :createlicense, opts
+      res[:licensedata][:number]
     end
 
     # Create license without user (added in RegServ API v1.0.003)
@@ -71,13 +72,14 @@ module TeamdriveApi
     # @see #create_license
     def create_license_without_user(opts = {})
       require_all of: [:productname, :type, :featurevalue], in_hash: opts
-      send_request :createlicensewithoutuser, opts
+      res = send_request :createlicensewithoutuser, opts
+      res[:licensedata][:number]
     end
 
     # Get default-license for a user
     #
     # @param [String] username
-    # @param [String] distributor (optional)
+    # @param [String] distributor _optional_
     # @return [Hash] the license data
     def get_default_license_for_user(username, distributor = nil)
       res = send_request :getdefaultlicense,
@@ -120,27 +122,27 @@ module TeamdriveApi
     #   when creating a new account, they will not be checked when a user
     #   attempts to log in.
     #
-    # @param [Hash] Data for the new user.
+    # @param [Hash] opts Data for the new user.
     # @option opts [String] :username
     # @option opts [String] :useremail
     # @option opts [String] :password
-    # @option opts [String] :language (optional)
-    # @option opts [String] :reference (optional)
-    # @option opts [String] :department (optional)
-    # @option opts [String] :distributor (optional)
+    # @option opts [String] :language _optional_
+    # @option opts [String] :reference _optional_
+    # @option opts [String] :department _optional_
+    # @option opts [String] :distributor _optional_
     # @return [Boolean] +true+ if the User has been created
     def register_user(opts = {})
       require_all of: [:username, :useremail, :password], in_hash: opts
-      send_request(:registeruser, opts)
+      res = send_request(:registeruser, opts)
       res[:intresult].eql?('0')
     end
     alias_method :create_account, :register_user
 
     # Remove user (added in RegServ API v1.0.003)
     #
-    # @param [String] username to be deleted
-    # @param [Boolean] delete the user's license aswell
-    # @param [String] distributor will only be used if allowed by the API (see
+    # @param [String] username User to be deleted
+    # @param [Boolean] delete_license delete the user's license aswell
+    # @param [String] distributor Distributor. Will only be used if allowed by the API (see
     #   +APIAllowSettingDistributor+ in the Teamdrive Register docs).
     # @return [Boolean] success?
     def remove_user(username, delete_license = false, distributor = nil)

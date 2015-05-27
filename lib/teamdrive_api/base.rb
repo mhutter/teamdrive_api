@@ -67,16 +67,16 @@ module TeamdriveApi
         query: { checksum: Digest::MD5.hexdigest(body + @api_checksum_salt) }
       )
 
-      return_or_fail res['teamdrive'].symbolize_keys
+      return_or_fail(res['teamdrive'].symbolize_keys)
     end
 
+    # raise TeamdriveApi::Error if +response+ contains an exception, return
+    # +response+ otherwise
     def return_or_fail(response)
-      unless response[:exception].nil?
-        fail TeamdriveApi::Error.new response[:exception][:primarycode],
-                                     response[:exception][:secondarycode],
-                                     response[:exception][:message]
-      end
-      response
+      return response if response[:exception].nil?
+      fail TeamdriveApi::Error.new response[:exception][:primarycode],
+                                   response[:exception][:secondarycode],
+                                   response[:exception][:message]
     end
   end
 end

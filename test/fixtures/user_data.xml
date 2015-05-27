@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<teamdrive>
+  <apiversion>1.0.005</apiversion>
+  <userdata>
+    <username>foo</username>
+    <email>foo@example.com</email>
+    <language>EN</language>
+    <distributor>EXCO</distributor>
+    <reference>123</reference>
+    <department></department>
+  </userdata>
+</teamdrive>
