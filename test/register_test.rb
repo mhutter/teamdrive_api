@@ -3,6 +3,7 @@ require 'test_helper'
 class TestRegister < Minitest::Test
   KLASS = ::TeamdriveApi::Register
   RESPONSE_OK = "<?xml version='1.0' encoding='UTF-8' ?><teamdrive><apiversion>1.0.005</apiversion><intresult>0</intresult></teamdrive>"
+  URL = %r(https://example.com/pbas/td2api/api/api.htm)
 
   def setup
     @r = KLASS.new('example.com', 'a1b2c3', '1.0.005')
@@ -17,30 +18,30 @@ class TestRegister < Minitest::Test
   end
 
   def test_remove_user
-    request = stub_request(:post, 'https://example.com/pbas/td2api/api/api.htm?checksum=ddde6d37ff196c2bd175a76be4b7dc3d')
-              .with(body: /.*removeuser.*foo.*\$false/)
+    request = stub_request(:post, URL)
+              .with(body: /.*removeuser.*<username>foo.*<deletelicense>\$false/)
               .to_return(status: 200, body: RESPONSE_OK, headers: {})
 
     Time.stub :now, Time.at(0) do
-      assert @r.remove_user('foo', false)
+      assert @r.remove_user(username: 'foo', delete_license: false)
       assert_requested request
     end
   end
 
   def test_remove_invalid_user
     response_body = "<?xml version='1.0' encoding='UTF-8' ?><teamdrive><apiversion>1.0.005</apiversion><exception><primarycode>-30100</primarycode><secondarycode></secondarycode><message>Username does not exists</message></exception></teamdrive>"
-    stub_request(:post, /example\.com/)
+    stub_request(:post, URL)
       .with(body: /removeuser/)
       .to_return(status: 200, body: response_body)
 
     e = assert_raises TeamdriveApi::Error do
-      @r.remove_user('unknown')
+      @r.remove_user(username: 'unknown')
     end
     assert_equal 'Username does not exists', e.message
   end
 
   def test_search_user
-    stub = stub_request(:post, /example\.com/)
+    stub = stub_request(:post, URL)
            .with(body: %r{searchuser.*\$false.*\$false.*<username>foobar<\/username>})
            .to_return(status: 200, body: xml_fixture(:search_user))
     @r.search_user(username: 'foobar')
@@ -48,7 +49,7 @@ class TestRegister < Minitest::Test
   end
 
   def test_search_user_with_boolean_params
-    stub = stub_request(:post, /example\.com/)
+    stub = stub_request(:post, URL)
            .with(body: %r{searchuser.*\$true.*\$false.*<email>\*@example.com<\/email>})
            .to_return(status: 200, body: xml_fixture(:search_user))
     @r.search_user(email: '*@example.com', showdevice: true, onlyownusers: false)
@@ -70,7 +71,7 @@ class TestRegister < Minitest::Test
   end
 
   def test_create_license
-    request = stub_request(:post, 'https://example.com/pbas/td2api/api/api.htm?checksum=81ffe2e78d2de0913996d087764b358b')
+    request = stub_request(:post, URL)
               .with(body: /createlicense.*<productname>client.*<type>monthly.*<featurevalue>professional/)
               .to_return(status: 200, body: xml_fixture(:create_license), headers: {})
 
@@ -84,7 +85,7 @@ class TestRegister < Minitest::Test
   end
 
   def test_create_license_without_user
-    request = stub_request(:post, 'https://example.com/pbas/td2api/api/api.htm?checksum=df78f7da006e99930a2b5e9c741b08a5')
+    request = stub_request(:post, URL)
               .with(body: /createlicensewithoutuser.*client.*permanent.*enterprise/)
               .to_return(status: 200, body: xml_fixture(:create_license), headers: {})
 
@@ -105,7 +106,7 @@ class TestRegister < Minitest::Test
   end
 
   def test_assign_user_to_license
-    request = stub_request(:post, 'https://example.com/pbas/td2api/api/api.htm?checksum=b6266e47a8fc75be2cc791e47621c4b7')
+    request = stub_request(:post, URL)
               .with(body: /assignusertolicense.*<username>foo.*<number>12345/)
               .to_return(status: 200, body: RESPONSE_OK, headers: {})
 
@@ -116,7 +117,7 @@ class TestRegister < Minitest::Test
   end
 
   def test_assign_license_to_client
-    request = stub_request(:post, 'https://example.com/pbas/td2api/api/api.htm?checksum=2b417e5ecc06694f7e50684383a76be6')
+    request = stub_request(:post, URL)
               .with(body: /assignlicensetoclient.*<username>foo.*<number>12345/)
               .to_return(status: 200, body: RESPONSE_OK, headers: {})
 
@@ -127,7 +128,7 @@ class TestRegister < Minitest::Test
   end
 
   def test_get_usert_data
-    request = stub_request(:post, 'https://example.com/pbas/td2api/api/api.htm?checksum=ed5ad65edd718cda603e1a24567408f7')
+    request = stub_request(:post, URL)
               .with(body: /getuserdata.*<username>foo/)
               .to_return(status: 200, body: xml_fixture(:user_data))
 
@@ -151,7 +152,7 @@ class TestRegister < Minitest::Test
   end
 
   def test_register_user
-    request = stub_request(:post, 'https://example.com/pbas/td2api/api/api.htm?checksum=abf5b2a1f265960504888f08833d795c')
+    request = stub_request(:post, URL)
               .with(body: /registeruser.*<username>foo.*<useremail>foo@example.com.*<password>/)
               .to_return(status: 200, body: RESPONSE_OK, headers: {})
 

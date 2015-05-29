@@ -50,15 +50,15 @@ module TeamdriveApi
     # @option opts [String] :type +monthly+ / +yearly+ / +permanent+
     # @option opts [String] :featurevalue one of +webdavs+, +personal+,
     #   +professional+, +enterprise+
-    # @option opts [String] :limit Amount, only for client licenses
+    # @option opts [String] :limit Amount, only for client licenses. _Optional_.
     # @option opts [String] :licensereference An _optional_ external reference.
     #   Added with v1.0.004
-    # @option opts [String] :contactnumber An optional contact number. Added
+    # @option opts [String] :contactnumber An _optional_ contact number. Added
     #   with v1.0.004
-    # @option opts [String] :validuntil An optional valid-until date. Format
-    #   must be +DD.MM.YYYY+. Added with v1.0.004
-    # @option opts [String] :changeid An optional change id for license changes.
-    #   Added with v1.0.004
+    # @option opts [String] :validuntil An _optional_ valid-until date. Format
+    #   must be +MM/DD/YYYY+. Added with v1.0.004
+    # @option opts [String] :changeid An _optional_ change id for license
+    #   changes. Added with v1.0.004
     # @return [String] The license number of the created license
     def create_license(opts = {})
       require_all of: [:username, :productname, :type, :featurevalue],
@@ -142,13 +142,15 @@ module TeamdriveApi
     #
     # @param [String] username User to be deleted
     # @param [Boolean] delete_license delete the user's license aswell
-    # @param [String] distributor Distributor. Will only be used if allowed by the API (see
-    #   +APIAllowSettingDistributor+ in the Teamdrive Register docs).
+    # @param [Boolean] delete_depot delete the user's depot (data) aswell
+    # @param [String] distributor Distributor. Only used if allowed by the API
+    #   (see +APIAllowSettingDistributor+ in the Teamdrive Register docs).
     # @return [Boolean] success?
-    def remove_user(username, delete_license = false, distributor = nil)
+    def remove_user(username:, delete_license: false, delete_depot: false, distributor: nil)
       res = send_request :removeuser,
                          username: username,
-                         delete_license: delete_license,
+                         deletelicense: delete_license,
+                         deletedepot: delete_depot,
                          distributor: distributor
 
       res[:intresult].eql?('0')
