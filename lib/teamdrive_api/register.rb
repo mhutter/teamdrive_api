@@ -20,7 +20,7 @@ module TeamdriveApi
     # @param [Array] devices optional list of devices the user posses. If
     #   empty, all of the user's devices will be used
     # @return [Boolean] success?
-    def assign_license_to_client(username, number, devices = [])
+    def assign_license_to_client(username, number, devices = nil)
       res = send_request :assignlicensetoclient,
                          username: username,
                          number: number,
@@ -74,6 +74,30 @@ module TeamdriveApi
       require_all of: [:productname, :type, :featurevalue], in_hash: opts
       res = send_request :createlicensewithoutuser, opts
       res[:licensedata][:number]
+    end
+
+    # Downgrade default-license
+    #
+    # @param [Hash] opts license options
+    # @option opts [String] :username
+    # @option opts [String] :featurevalue _optional_
+    # @option opts [String] :limit _optional_
+    def downgrade_default_license(opts = {})
+      require_all of: [:username], in_hash: opts
+      res = send_request(:downgradedefaultlicense, opts)
+      res[:intresult].eql?('0')
+    end
+
+    # Upgrade default-license
+    #
+    # @param [Hash] opts license options
+    # @option opts [String] :username
+    # @option opts [String] :featurevalue _optional_
+    # @option opts [String] :limit _optional_
+    def upgrade_default_license(opts = {})
+      require_all of: [:username], in_hash: opts
+      res = send_request(:upgradedefaultlicense, opts)
+      res[:intresult].eql?('0')
     end
 
     # Get default-license for a user

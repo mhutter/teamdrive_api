@@ -165,4 +165,26 @@ class TestRegister < Minitest::Test
       assert_requested request
     end
   end
+
+  def test_downgrade_default_license
+    request = stub_request(:post, URL)
+              .with(body: /downgradedefaultlicense.*<username>foo.*<featurevalue>0/)
+              .to_return(status: 200, body: RESPONSE_OK, headers: {})
+
+    Time.stub :now, Time.at(0) do
+      assert @r.downgrade_default_license(username: 'foo', featurevalue: 0)
+      assert_requested request
+    end
+  end
+
+  def test_upgrade_default_license
+    request = stub_request(:post, URL)
+              .with(body: /upgradedefaultlicense.*<username>foo.*<featurevalue>0/)
+              .to_return(status: 200, body: RESPONSE_OK, headers: {})
+
+    Time.stub :now, Time.at(0) do
+      assert @r.upgrade_default_license(username: 'foo', featurevalue: 0)
+      assert_requested request
+    end
+  end
 end
