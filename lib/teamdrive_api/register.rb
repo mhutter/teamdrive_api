@@ -164,18 +164,23 @@ module TeamdriveApi
 
     # Remove user (added in RegServ API v1.0.003)
     #
-    # @param [String] username User to be deleted
-    # @param [Boolean] delete_license delete the user's license aswell
-    # @param [Boolean] delete_depot delete the user's depot (data) aswell
-    # @param [String] distributor Distributor. Only used if allowed by the API
-    #   (see +APIAllowSettingDistributor+ in the Teamdrive Register docs).
+    # @param username [String] User to be deleted
+    # @param [Hash] opts Options
+    # @option opts [Boolean] :deletelicense Remove the users licenses aswell.
+    #   -- Default: +false+
+    # @option opts [Boolean] :deletedepot Remove the users depot (data) aswell.
+    #   -- Default: +false+
+    # @option opts [String] :distributor Distributor. Only used if allowed by
+    #   the API (see +APIAllowSettingDistributor+ in the TD Register docs).
+    #   -- Default: +nil+
     # @return [Boolean] success?
-    def remove_user(username:, delete_license: false, delete_depot: false, distributor: nil)
-      res = send_request :removeuser,
-                         username: username,
-                         deletelicense: delete_license,
-                         deletedepot: delete_depot,
-                         distributor: distributor
+    def remove_user(username, opts = {})
+      opts = {
+        username: username,
+        deletelicense: false,
+        deletedepot: false
+      }.merge(opts)
+      res = send_request :removeuser, opts
 
       res[:intresult].eql?('0')
     end

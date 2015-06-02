@@ -23,7 +23,7 @@ class TestRegister < Minitest::Test
               .to_return(status: 200, body: RESPONSE_OK, headers: {})
 
     Time.stub :now, Time.at(0) do
-      assert @r.remove_user(username: 'foo', delete_license: false)
+      assert @r.remove_user('foo', delete_license: false)
       assert_requested request
     end
   end
@@ -35,7 +35,7 @@ class TestRegister < Minitest::Test
       .to_return(status: 200, body: response_body)
 
     e = assert_raises TeamdriveApi::Error do
-      @r.remove_user(username: 'unknown')
+      @r.remove_user('unknown')
     end
     assert_equal 'Username does not exists', e.message
   end
