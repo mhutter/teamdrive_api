@@ -1,7 +1,13 @@
-#!/bin/bash
-set -euo pipefail
-IFS=$'\n\t'
+#!/bin/sh
 
-bundle install
+set -e
 
-# Do any other automated setup that you need to do here
+cd "$(dirname "$0")/.."
+
+echo "==> Installing gem dependencies…"
+bundle version &> /dev/null || {
+  gem install bundler --no-rdoc --no-ri
+}
+bundle check --path .bundle &>/dev/null || {
+  bundle install --path .bundle --quiet --without production
+}
