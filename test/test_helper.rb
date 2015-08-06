@@ -1,15 +1,17 @@
+require 'bundler/setup'
+
+require 'simplecov'
+SimpleCov.add_filter '.bundle'
 if ENV['CODECLIMATE_REPO_TOKEN']
   require 'codeclimate-test-reporter'
   CodeClimate::TestReporter.start
 else
-  require 'simplecov'
   SimpleCov.start
 end
 
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'teamdrive_api'
 
-gem 'minitest'
 require 'minitest/autorun'
 require 'pry'
 require 'webmock/minitest'

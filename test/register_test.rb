@@ -3,7 +3,7 @@ require 'test_helper'
 class TestRegister < Minitest::Test
   KLASS = ::TeamdriveApi::Register
   RESPONSE_OK = "<?xml version='1.0' encoding='UTF-8' ?><teamdrive><apiversion>1.0.005</apiversion><intresult>0</intresult></teamdrive>"
-  URL = %r(https://example.com/pbas/td2api/api/api.htm)
+  URL = %r{https://example.com/pbas/td2api/api/api.htm}
 
   def setup
     @r = KLASS.new('example.com', 'a1b2c3', '1.0.005')
