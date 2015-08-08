@@ -6,17 +6,14 @@ require 'teamdrive_api/version'
 Gem::Specification.new do |s|
   s.name          = 'teamdrive_api'
   s.version       = TeamdriveApi::VERSION
-  s.authors       = ['Manuel Hutter']
-  s.email         = ['git@mhutter.net']
+  s.author        = 'Manuel Hutter'
 
   s.summary       = 'TeamDrive API Client'
   s.description   = 'Client library for the TeamDrive XML API. Currently only supports the RegServer API'
   s.homepage      = 'https://github.com/mhutter/teamdrive_api'
   s.license       = 'MIT'
 
-  s.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-  s.bindir        = 'exe'
-  s.executables   = s.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  s.files         = `git ls-files -z git ls-files -z lib/ [A-Z][A-Z]*`.split("\x0")
   s.require_paths = ['lib']
 
   s.add_runtime_dependency 'httparty', '~> 0.13'
