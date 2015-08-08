@@ -7,6 +7,7 @@ Gem::Specification.new do |s|
   s.name          = 'teamdrive_api'
   s.version       = TeamdriveApi::VERSION
   s.author        = 'Manuel Hutter'
+  s.email         = 'manuel@hutter.io'
 
   s.summary       = 'TeamDrive API Client'
   s.description   = 'Client library for the TeamDrive XML API. Currently only supports the RegServer API'
@@ -19,7 +20,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'httparty', '~> 0.13'
 
   s.add_development_dependency 'bundler', '~> 1.8'
-  s.add_development_dependency 'codeclimate-test-reporter'
+  s.add_development_dependency 'codeclimate-test-reporter', '~> 0'
   s.add_development_dependency 'minitest', '~> 5.5'
   s.add_development_dependency 'pry', '~> 0.10'
   s.add_development_dependency 'rake', '~> 10.0'
