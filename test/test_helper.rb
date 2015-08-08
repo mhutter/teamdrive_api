@@ -14,8 +14,14 @@ require 'teamdrive_api'
 
 require 'minitest/autorun'
 require 'pry'
-require 'webmock/minitest'
 
+begin
+  require 'minitest/reporters'
+  Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
+rescue LoadError
+end
+
+require 'webmock/minitest'
 WebMock.disable_net_connect! allow: 'codeclimate.com'
 
 # read and return the contents of an xml file
