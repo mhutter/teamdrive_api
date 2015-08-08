@@ -1,4 +1,5 @@
 require 'bundler/setup'
+require 'pry'
 
 require 'simplecov'
 SimpleCov.add_filter '.bundle'
@@ -13,13 +14,8 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'teamdrive_api'
 
 require 'minitest/autorun'
-require 'pry'
-
-begin
-  require 'minitest/reporters'
-  Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
-rescue LoadError
-end
+require 'minitest/reporters'
+Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
 require 'webmock/minitest'
 WebMock.disable_net_connect! allow: 'codeclimate.com'

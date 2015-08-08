@@ -1,3 +1,9 @@
+begin
+  require 'ruby_gntp'
+rescue LoadError
+  puts 'Install `ruby_gntp` to enable growl notifications'
+end
+
 guard :minitest do
   # with Minitest::Unit
   watch(%r{^test/(.*)\/?(.*)_test\.rb$})
@@ -6,6 +12,6 @@ guard :minitest do
 end
 
 guard :rubocop do
-  watch(/.+\.rb$}/)
+  watch(/.+\.rb$/)
   watch(%r{(?:.+/)?\.rubocop\.yml$}) { |m| File.dirname(m[0]) }
 end

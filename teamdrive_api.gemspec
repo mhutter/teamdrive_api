@@ -20,9 +20,11 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'httparty', '~> 0.13'
 
   s.add_development_dependency 'bundler', '~> 1.8'
-  s.add_development_dependency 'codeclimate-test-reporter', '~> 0'
-  s.add_development_dependency 'minitest', '~> 5.5'
-  s.add_development_dependency 'pry', '~> 0.10'
   s.add_development_dependency 'rake', '~> 10.0'
+  s.add_development_dependency 'pry', '~> 0.10'
+  # Testing
+  s.add_development_dependency 'codeclimate-test-reporter', '~> 0'
+  s.add_development_dependency 'minitest', '~> 5.8'
+  s.add_development_dependency 'minitest-reporters', '~> 1.0'
   s.add_development_dependency 'webmock', '~> 1.20'
 end
