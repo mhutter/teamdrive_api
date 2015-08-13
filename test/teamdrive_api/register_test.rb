@@ -187,4 +187,15 @@ class TestRegister < Minitest::Test
       assert_requested request
     end
   end
+
+  def test_reset_password
+    request = stub_request(:post, URL)
+              .with(body: /resetpassword.*<username>foo</)
+              .to_return(status: 200, body: RESPONSE_OK, headers: {})
+
+    Time.stub :now, Time.at(0) do
+      assert @r.reset_password('foo')
+      assert_requested request
+    end
+  end
 end

@@ -202,5 +202,16 @@ module TeamdriveApi
       }.merge(query)
       send_request :searchuser, query
     end
+
+    # Reset Password (added in RegServ API v1.0.003)
+    #
+    # Resetting a user's password will set it to a random value.
+    #
+    # @param [String] username of the user to reset the password.
+    # @return [Boolean] success?
+    def reset_password(username)
+      opts = { username: username }
+      send_request :resetpassword, opts
+    end
   end
 end
