@@ -2,17 +2,6 @@ module TeamdriveApi
   # API Client for the TeamDrive Register Server. See the TeamDrive Register
   # docs for more informations on specific commands.
   class Register < Base
-    # Create a new Register API Client.
-    #
-    # @param [String] host the API Server
-    # @param [String] api_checksum_salt the +APIChecksumSalt+ system setting
-    #   ("Edit Settings -> RegServer").
-    # @param [String] api_version optionally overwrite the api_version
-    def initialize(host, api_checksum_salt, api_version = '1.0.005')
-      super
-      @uri = URI.join(@host + '/', 'pbas/td2api/api/api.htm').to_s
-    end
-
     # Assign license to client (added in RegServ API 1.0.004)
     #
     # @param [String] username

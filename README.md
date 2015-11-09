@@ -30,8 +30,10 @@ Or install it yourself as:
 
 ## Usage
 
+**Note about the URI:** For Pre-3.5-Versions of TeamDrive, this is usually `https://server/pbas/td2api/api/api.htm`. From 3.5 onward, it is usually `https://server/yvva/td2api/api/api.htm`.
+
 ```ruby
-api = TeamdriveApi::Register.new('example.com', 'd3b07384d113edec49eaa6238ad5ff00', '1.0.005')
+api = TeamdriveApi::Register.new('example.com/yvva/api/api.htm', 'd3b07384d113edec49eaa6238ad5ff00', '1.0.005')
 
 api.remove_user 'foobar'
 #=> true
@@ -71,6 +73,10 @@ api.search_user username: '$CODE-*'
 ```
 
 For more Information see {TeamdriveApi::Register}
+
+### Version History
+
+See the [CHANGELOG](https://github.com/mhutter/teamdrive_api/tree/master/CHANGELOG.md)
 
 ## Development
 

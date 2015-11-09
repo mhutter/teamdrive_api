@@ -9,10 +9,16 @@ module TeamdriveApi
     attr_reader :uri
     format :xml
 
-    def initialize(host, api_checksum_salt, api_version)
+    # Create a new TD API Client.
+    #
+    # @param [String] uri URI to the API. See README.
+    # @param [String] api_checksum_salt the +APIChecksumSalt+ system setting
+    #   ("Edit Settings -> RegServer").
+    # @param [String] api_version optionally overwrite the api_version
+    def initialize(uri, api_checksum_salt, api_version)
       @api_checksum_salt = api_checksum_salt
       @api_version       = api_version
-      @host = host.start_with?('http') ? host : 'https://' + host
+      @uri = uri.start_with?('http') ? uri : 'https://' + uri
     end
 
     # Generates the XML payload for the RPC

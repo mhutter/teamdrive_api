@@ -3,18 +3,10 @@ require 'test_helper'
 class TestRegister < Minitest::Test
   KLASS = ::TeamdriveApi::Register
   RESPONSE_OK = "<?xml version='1.0' encoding='UTF-8' ?><teamdrive><apiversion>1.0.005</apiversion><intresult>0</intresult></teamdrive>"
-  URL = %r{https://example.com/pbas/td2api/api/api.htm}
+  URL = %r{https://example.com/yvva/td2api/api/api.htm}
 
   def setup
-    @r = KLASS.new('example.com', 'a1b2c3', '1.0.005')
-  end
-
-  def test_that_the_uri_is_constructed_correctly
-    r = KLASS.new('example.com', '')
-    assert_equal 'https://example.com/pbas/td2api/api/api.htm', r.uri
-
-    r = KLASS.new('http://example.com/foo', '')
-    assert_equal 'http://example.com/foo/pbas/td2api/api/api.htm', r.uri
+    @r = KLASS.new('example.com/yvva/td2api/api/api.htm', 'a1b2c3', '1.0.005')
   end
 
   def test_remove_user
