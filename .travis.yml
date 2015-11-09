@@ -1,6 +1,12 @@
 language: ruby
 rvm:
-  - 2.2.1
+- 2.2.1
 branches:
   only:
-    - master
+  - master
+deploy:
+  provider: rubygems
+  api_key:
+    secure: Ho7NRGHByAjmIIsSVgsLYSBxAoNFGDiMglZifv8JuSvRK1jg72MHCu6kQVbq3LWYoQUQRZpBUeoxrxZF0vs8ErQzo0K7jw33x3cbBIChPnHK1vP4NfmsH+yqnSsynI14vWXk1YmR0SVHhqo9iRjKaazoV73rF8k/ynZHtBxCAKU=
+  on:
+    tags: true
