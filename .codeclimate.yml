@@ -1,4 +1,11 @@
-languages:
-  Ruby: true
+---
+engines:
+  fixme:
+    enabled: true
+  rubocop:
+    enabled: true
+ratings:
+  paths:
+  - "**.rb"
 exclude_paths:
-- "lib/teamdrive_api/version.rb"
+- lib/teamdrive_api/version.rb
