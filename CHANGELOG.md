@@ -1,3 +1,8 @@
+**0.5.0** (2015-11)
+
+* added module for the Host Server API!
+* added `Host: set depot limits (setdepot)`
+
 **0.4.0** (2015-11-09)
 
 * **BREAKING** You now have to provide the complete URI to the TD-API, not only the host name!
