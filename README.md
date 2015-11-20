@@ -30,10 +30,14 @@ Or install it yourself as:
 
 ## Usage
 
-**Note about the URI:** For Pre-3.5-Versions of TeamDrive, this is usually `https://server/pbas/td2api/api/api.htm`. From 3.5 onward, it is usually `https://server/yvva/td2api/api/api.htm`.
+**Note about the URI:** For Pre-3.5-Versions of TeamDrive, this is usually `https://server/pbas/td2api/api/api.htm` for the Reg Server API and `https://server/pbas/p1_as/api/api.htm` for the Host Server API. From 3.5 onward, it is usually `https://server/yvva/td2api/api/api.htm` for the Reg Server API and `https://server/yvva/api/api.htm` for the Host Server API.
 
 ```ruby
 api = TeamdriveApi::Register.new('example.com/yvva/api/api.htm', 'd3b07384d113edec49eaa6238ad5ff00', '1.0.005')
+# Parameters for TeamdriveApi::Register.new and TeamdriveApi::Host.new:
+# - URI (will use https if no schema is provided)
+# - api_checksum_salt (from your Register/Host server)
+# - api_version (has no effect but is included in requests to the servers)
 
 api.remove_user 'foobar'
 #=> true

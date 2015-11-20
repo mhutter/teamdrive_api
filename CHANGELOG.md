@@ -1,6 +1,12 @@
-**0.4.1** (2016-01-07)
+**0.5.1** (2016-01-07)
 
 * added `Registration: delete license`
+
+
+**0.5.0** (2015-11)
+
+* added module for the Host Server API!
+* added `Host: set depot limits (setdepot)`
 
 
 **0.4.0** (2015-11-09)
