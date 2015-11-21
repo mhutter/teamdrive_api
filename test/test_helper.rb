@@ -3,6 +3,7 @@ require 'pry'
 
 require 'simplecov'
 SimpleCov.add_filter '.bundle'
+SimpleCov.add_filter 'test'
 if ENV['CODECLIMATE_REPO_TOKEN']
   require 'codeclimate-test-reporter'
   CodeClimate::TestReporter.start
