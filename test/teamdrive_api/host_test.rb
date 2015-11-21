@@ -2,7 +2,7 @@ require 'test_helper'
 
 class TestHost < Minitest::Test
   KLASS = ::TeamdriveApi::Host
-  RESPONSE_OK = "<?xml version='1.0' encoding='UTF-8' ?><teamdrive><apiversion>1.0.005</apiversion><intresult>0</intresult></teamdrive>"
+  BODY_OK = "<?xml version='1.0' encoding='UTF-8' ?><teamdrive><apiversion>3.0.003</apiversion><intresult>0</intresult></teamdrive>"
   URL = %r{https://example.com/yvva/api/api.htm}
 
   def setup
@@ -10,13 +10,18 @@ class TestHost < Minitest::Test
   end
 
   def test_set_depot
-    request = stub_request(:post, URL)
-              .with(body: /.*>setdepot<.*<depotid>123</)
-              .to_return(status: 200, body: RESPONSE_OK, headers: {})
+    stub_request(:post, URL).to_return(status: 200, body: BODY_OK)
 
     Time.stub :now, Time.at(0) do
       assert @h.set_depot('foo', '123', disclimit: 3, trafficlimit: 30)
-      assert_requested request
+    end
+
+    assert_requested(:post, URL) do |req|
+      req.body =~ />setdepot</ &&
+        req.body =~ /<username>foo</ &&
+        req.body =~ /<depotid>123</ &&
+        req.body =~ /<disclimit>3</ &&
+        req.body =~ /<trafficlimit>30</
     end
   end
 end

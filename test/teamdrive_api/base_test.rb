@@ -4,7 +4,7 @@ class TestTeamdriveApiBase < Minitest::Test
   KLASS = ::TeamdriveApi::Base
 
   def setup
-    @r = KLASS.new('example.com/yvva/td2api/api/api.htm', 'salt', 'api_version')
+    @r = KLASS.new('example.com/yvva/api/api.htm', 'salt', 'api_version')
   end
 
   def test_that_it_creates_a_client
