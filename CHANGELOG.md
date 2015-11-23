@@ -3,10 +3,11 @@
 * added `Registration: delete license`
 
 
-**0.5.0** (2015-11)
+**0.5.0** (2015-11-23)
 
 * added module for the Host Server API!
 * added `Host: set depot limits (setdepot)`
+* added `Register: Get default depot URL by username (getdefaultdepotdata)`
 
 
 **0.4.0** (2015-11-09)
