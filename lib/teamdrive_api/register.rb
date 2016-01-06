@@ -89,6 +89,16 @@ module TeamdriveApi
       res[:intresult].eql?('0')
     end
 
+    # Delete licence
+    #
+    # @param [Hash] opts license options
+    # @option opts [String] :licensenumber
+    def delete_license(opts = {})
+      require_all of: [:licensenumber], in_hash: opts
+      res = send_request(:deletelicense, opts)
+      res[:intresult].eql?('0')
+    end
+
     # Get default-license for a user
     #
     # @param [String] username

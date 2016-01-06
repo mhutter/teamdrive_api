@@ -190,4 +190,17 @@ class TestRegister < Minitest::Test
       assert_requested request
     end
   end
+
+
+  def test_delete_license
+    request = stub_request(:post, URL)
+    .with(body: /deletelicense.*<licensenumber>foo</)
+    .to_return(status: 200, body: RESPONSE_OK, headers: {})
+
+    Time.stub :now, Time.at(0) do
+      assert @r.delete_license('foo')
+      assert_requested request
+    end
+  end
+
 end
