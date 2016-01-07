@@ -1,6 +1,12 @@
+**0.4.1** (2016-01-07)
+
+* added `Registration: delete license`
+
+
 **0.4.0** (2015-11-09)
 
 * **BREAKING** You now have to provide the complete URI to the TD-API, not only the host name!
+
 
 **0.1.0 - 0.3.6** (2015-06-02)
 
