@@ -1,6 +1,6 @@
 language: ruby
 rvm:
-- 2.2.3
+- 2.2.4
 - 2.1.7
 - 2.0.0-p647
 deploy:
@@ -9,4 +9,4 @@ deploy:
     secure: Ho7NRGHByAjmIIsSVgsLYSBxAoNFGDiMglZifv8JuSvRK1jg72MHCu6kQVbq3LWYoQUQRZpBUeoxrxZF0vs8ErQzo0K7jw33x3cbBIChPnHK1vP4NfmsH+yqnSsynI14vWXk1YmR0SVHhqo9iRjKaazoV73rF8k/ynZHtBxCAKU=
   on:
     tags: true
-    ruby: '2.2.3'
+    ruby: '2.2.4'
