@@ -1,3 +1,8 @@
+**0.5.2** (2016-01-26)
+
+* changed `Registration: get default depot data`: now only returns relevant data
+
+
 **0.5.1** (2016-01-07)
 
 * added `Registration: delete license`
