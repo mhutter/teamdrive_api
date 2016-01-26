@@ -138,11 +138,12 @@ module TeamdriveApi
     #
     # @param [String] username
     # @param [String] distributor (optional)
-    # @return [Hash] the default depot data
+    # @return [Array] the default depot data
     def get_default_depot_data(username, distributor = nil)
-      send_request :getdefaultdepotdata,
-                   username: username,
-                   distributor: distributor
+      data = send_request :getdefaultdepotdata,
+                          username: username,
+                          distributor: distributor
+      [data[:depotdata][:depot]].flatten
     end
 
     # Create a new Account
