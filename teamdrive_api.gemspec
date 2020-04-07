@@ -23,7 +23,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake', '~> 12.3.3'
   s.add_development_dependency 'pry', '~> 0.10'
   # Testing
-  s.add_development_dependency 'codeclimate-test-reporter', '~> 0'
   s.add_development_dependency 'minitest', '~> 5.8'
   s.add_development_dependency 'minitest-reporters', '~> 1.0'
   s.add_development_dependency 'webmock', '~> 1.20'
